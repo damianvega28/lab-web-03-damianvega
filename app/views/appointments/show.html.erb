@@ -1,2 +1,40 @@
 <h1>Appointments#show</h1>
-<p>Find me in app/views/appointments/show.html.erb</p>
+
+<p><strong>Date:</strong> <%= @appointment.date.strftime("%B %d, %Y %H:%M") %></p>
+<p><strong>Reason:</strong> <%= @appointment.reason %></p>
+<p><strong>Status:</strong>
+  <% case @appointment.status
+     when 0 then %> Scheduled
+  <% when 1 then %> In Progress
+  <% when 2 then %> Completed
+  <% when 3 then %> Cancelled
+  <% end %>
+</p>
+<p><strong>Pet:</strong> <%= link_to @appointment.pet.name, pet_path(@appointment.pet) %></p>
+<p><strong>Vet:</strong> <%= link_to "#{@appointment.vet.first_name} #{@appointment.vet.last_name}", vet_path(@appointment.vet) %></p>
+
+<h2>Treatments</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Medication</th>
+      <th>Dosage</th>
+      <th>Administered At</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @appointment.treatments.each do |treatment| %>
+      <tr>
+        <td><%= treatment.name %></td>
+        <td><%= treatment.medication %></td>
+        <td><%= treatment.dosage %></td>
+        <td><%= treatment.administered_at.strftime("%B %d, %Y %H:%M") %></td>
+        <td><%= treatment.notes %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Back to Appointments", appointments_path %>
